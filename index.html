@@ -1,0 +1,122 @@
+
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Always force latest IE rendering engine or request Chrome Frame -->
+  <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+  <!-- Use title if it's in the page YAML frontmatter -->
+  <title>KRAM widget</title>
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="style.css">
+  <!--[if lt IE 9]>
+    <script>
+      document.createElement('header');
+      document.createElement('nav');
+      document.createElement('section');
+      document.createElement('article');
+      document.createElement('aside');
+      document.createElement('footer');
+    </script>
+    <style type='text/css'>
+      i.arrow {display:none};
+    </style>
+  <![endif]-->
+  <body>
+    <div id='widget'>
+      <header>
+        <h1>Har du det godt?</h1>
+        <h2 class='subtle-text'>Chat, brevkasser og debatter.</h2>
+      </header>
+      <section class='chat'>
+        <h3>
+          <a href='http://cyberhus.dk/chatr%C3%A5dgivning?utm_source=kram&amp;utm_medium=widget&amp;utm_campaign=kramwidget' target='_blank' title='Chatrådgivning i Cyberhus'>
+            <i class='icn-chat'></i>
+            Chatrådgivning
+            <i class='arrow'></i>
+          </a>
+        </h3>
+        <p>Chat om sundhed og andre emner med unge og voksne rådgivere.</p>
+      </section>
+      <section class='letterbox'>
+        <h3>
+          <a href='http://cyberhus.dk/brevkasse?utm_source=kram&amp;utm_medium=widget&amp;utm_campaign=kramwidget' target='_blank' title='Brevkasser i Cyberhus'>
+            <i class='icn-letterbox'></i>
+            Brevkasser
+            <i class='arrow'></i>
+          </a>
+        </h3>
+        <ul id='letterbox-container'></ul>
+      </section>
+      <section class='forum'>
+        <h3>
+          <a href='http://cyberhus.dk/debat?utm_source=kram&amp;utm_medium=widget&amp;utm_campaign=kramwidget' target='_blank' title='Debatter i Cyberhus'>
+            <i class='icn-forum'></i>
+            Debatter
+            <i class='arrow'></i>
+          </a>
+        </h3>
+        <ul id='forum-container'></ul>
+      </section>
+      <footer>
+        <p class='subtle-text'>Et samarbejde mellem Cyberhus og Københavns Kommune.</p>
+        <a class='logo-cyberhus' href='http://cyberhus.dk?utm_source=kram&amp;utm_medium=widget&amp;utm_campaign=kramwidget' target='_blank' title='Cyberhus'>
+          <i></i>
+        </a>
+        <a class='logo-kk' href='http://kk.dk' target='_blank' title='Københavns kommune'>
+          <i></i>
+        </a>
+      </footer>
+    </div>
+    <script>
+      //jsonp for incl. forum
+      function forum(nodes){
+
+        var nodesOutput = '';
+        var length = nodes.length;
+
+        for (var i = 0; i < length; i++) {
+          node = nodes[i].node;
+          nodesOutput += '<li><a target="_blank" title="Læs indlæget på Cyberhus" href="' + node.sti + '?utm_source=kram&utm_medium=widget&utm_campaign=kramwidget"><i class="arrow"></i><span>' + node.title + ' <time>' + node.date + ' siden</time></span></a></li>';
+        }
+        document.getElementById("forum-container").innerHTML = nodesOutput;
+      }
+      // jsonp for incl. letterbox
+      function letterbox(nodes){
+
+        var nodesOutput = '';
+        var length = nodes.length;
+
+        for (var i = 0; i < length; i++) {
+          node = nodes[i].node;
+          nodesOutput += '<li><a target="_blank" title="Læs brevkassespørgsmålet og svaret på Cyberhus" href="' + node.sti + '?utm_source=kram&utm_medium=widget&utm_campaign=kramwidget"><i class="arrow"></i><span>' + node.title + ' <time>' + node.date + ' siden</time></span></a></li>';
+        }
+        document.getElementById("letterbox-container").innerHTML = nodesOutput;
+      }
+
+      // Based on https://github.com/johnymonster/iframe_height
+      // Child script
+      var messageParent = function(scrollTop){
+        var h = document.body.scrollHeight;
+        h = (scrollTop)? h+'s':h;
+        if(top.postMessage){
+          top.postMessage( h , '*');
+        } else {
+          window.location.hash = 'h'+h;
+        }
+      }
+
+      // Child Loader
+      window.onload = function() {
+        messageParent();
+      }
+
+      window.onresize = function() {
+        messageParent();
+      }
+    </script>
+    <script src="/data-forum.js?callback=forum" type="text/javascript"></script>
+    <script src="/data-letterbox.js?callback=letterbox" type="text/javascript"></script>
+  </body>
+</html>
