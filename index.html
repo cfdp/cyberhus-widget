@@ -78,7 +78,7 @@
 
         for (var i = 0; i < length; i++) {
           node = nodes[i].node;
-          nodesOutput += '<li><a target="_blank" title="Læs indlæget på Cyberhus" href="' + node.sti + '?utm_source=kram&utm_medium=widget&utm_campaign=kramwidget"><i class="arrow"></i><span>' + node.title + ' <time>' + node.date + ' siden</time></span></a></li>';
+          nodesOutput += '<li><a target="_blank" title="Læs indlæget på Cyberhus" href="' + node.path + '?utm_source=kram&utm_medium=widget&utm_campaign=kramwidget"><i class="arrow"></i><span>' + node.title + ' <time>' + node.created + ' siden</time></span></a></li>';
         }
         document.getElementById("forum-container").innerHTML = nodesOutput;
       }
@@ -90,7 +90,7 @@
 
         for (var i = 0; i < length; i++) {
           node = nodes[i].node;
-          nodesOutput += '<li><a target="_blank" title="Læs brevkassespørgsmålet og svaret på Cyberhus" href="' + node.sti + '?utm_source=kram&utm_medium=widget&utm_campaign=kramwidget"><i class="arrow"></i><span>' + node.title + ' <time>' + node.date + ' siden</time></span></a></li>';
+          nodesOutput += '<li><a target="_blank" title="Læs brevkassespørgsmålet og svaret på Cyberhus" href="' + node.path + '?utm_source=kram&utm_medium=widget&utm_campaign=kramwidget"><i class="arrow"></i><span>' + node.title + ' <time>' + node.created + ' siden</time></span></a></li>';
         }
         document.getElementById("letterbox-container").innerHTML = nodesOutput;
       }
@@ -116,7 +116,7 @@
         messageParent();
       }
     </script>
-    <script src="/data-forum.js?callback=forum" type="text/javascript"></script>
-    <script src="/data-letterbox.js?callback=letterbox" type="text/javascript"></script>
+    <script src="https://cyberhus.dk/widget/forum?callback=forum" type="text/javascript"></script>
+    <script src="https://cyberhus.dk/widget/letterbox?callback=letterbox" type="text/javascript"></script>
   </body>
 </html>
