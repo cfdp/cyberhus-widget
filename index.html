@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
-  <head></head>
-  <meta charset='utf-8'>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Always force latest IE rendering engine or request Chrome Frame -->
-  <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-  <!-- Use title if it's in the page YAML frontmatter -->
-  <title>KRAM widget</title>
-  <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="style.css">
-  <!--[if lt IE 9]>
+
+<head></head>
+<meta charset='utf-8'>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Always force latest IE rendering engine or request Chrome Frame -->
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<!-- Use title if it's in the page YAML frontmatter -->
+<title>KRAM widget</title>
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="style.css">
+<!--[if lt IE 9]>
     <script>
       document.createElement('header');
       document.createElement('nav');
@@ -22,128 +23,149 @@
       i.arrow {display:none};
     </style>
   <![endif]-->
-  <body>
-    <div id='widget'>
-      <header>
-        <h1 id="title"></h1>
-        <h2 id="subtitle" class='subtle-text'></h2>
-      </header>
-      <section class='chat'>
-        <h3>
-          <a href='http://cyberhus.dk/chatr%C3%A5dgivning?utm_source=kram&amp;utm_medium=widget&amp;utm_campaign=kramwidget' target='_blank' title='Chatrådgivning i Cyberhus'>
-            <i class='icn-chat'></i>
-            Chatrådgivning
-            <i class='arrow'></i>
-          </a>
-        </h3>
-        <p id="chat-description"></p>
-      </section>
-      <section class='letterbox'>
-        <h3>
-          <a href='http://cyberhus.dk/brevkasse?utm_source=kram&amp;utm_medium=widget&amp;utm_campaign=kramwidget' target='_blank' title='Brevkasser i Cyberhus'>
-            <i class='icn-letterbox'></i>
-            Brevkasser
-            <i class='arrow'></i>
-          </a>
-        </h3>
-        <ul id='letterbox-container'></ul>
-      </section>
-      <section class='forum'>
-        <h3>
-          <a href='http://cyberhus.dk/debat?utm_source=kram&amp;utm_medium=widget&amp;utm_campaign=kramwidget' target='_blank' title='Debatter i Cyberhus'>
-            <i class='icn-forum'></i>
-            Debatter
-            <i class='arrow'></i>
-          </a>
-        </h3>
-        <ul id='forum-container'></ul>
-      </section>
-      <footer>
-        <p class='subtle-text'>Et samarbejde mellem Cyberhus og Aarhus Kommune.</p>
-        <a class='logo-cyberhus' href='http://cyberhus.dk?utm_source=kram&amp;utm_medium=widget&amp;utm_campaign=kramwidget' target='_blank' title='Cyberhus'>
-          <i></i>
-        </a>
-        <a class="logo-partner" href='http://aarhus.dk' target='_blank' title='Aarhus kommune'><img id="partner-logo"></a>
-      </footer>
-    </div>
-    <script>
-      // Helper function to add scripts
-      function addScript(url) {
-        var myScript = document.createElement('script');
-        myScript.setAttribute('src',url);
-        document.head.appendChild(myScript);
-      }
 
-      //jsonp for incl. various
-      function various(fields) {
-        var fieldsOutput = '',
+<body>
+  <div id='widget'>
+    <header>
+      <h1 id="title"></h1>
+      <h2 id="subtitle" class='subtle-text'></h2>
+    </header>
+    <section class='chat'>
+      <h3>
+        <a href='http://cyberhus.dk/chatr%C3%A5dgivning?utm_source=kram&amp;utm_medium=widget&amp;utm_campaign=kramwidget' target='_blank' title='Chatrådgivning i Cyberhus'>
+          <i class='icn-chat'></i> Chatrådgivning
+          <i class='arrow'></i>
+        </a>
+      </h3>
+      <p id="chat-description"></p>
+      <div class="login-button">
+        <a id="join-chat" class="btn chat" href="#">Lukket</a>
+      </div>
+    </section>
+    <section class='letterbox'>
+      <h3>
+        <a href='http://cyberhus.dk/brevkasse?utm_source=kram&amp;utm_medium=widget&amp;utm_campaign=kramwidget' target='_blank' title='Brevkasser i Cyberhus'>
+          <i class='icn-letterbox'></i> Brevkasser
+          <i class='arrow'></i>
+        </a>
+      </h3>
+      <ul id='letterbox-container'></ul>
+    </section>
+    <section class='forum'>
+      <h3>
+        <a href='http://cyberhus.dk/debat?utm_source=kram&amp;utm_medium=widget&amp;utm_campaign=kramwidget' target='_blank' title='Debatter i Cyberhus'>
+          <i class='icn-forum'></i> Debatter
+          <i class='arrow'></i>
+        </a>
+      </h3>
+      <ul id='forum-container'></ul>
+    </section>
+    <footer>
+      <p class='subtle-text'>Et samarbejde mellem Cyberhus og Aarhus Kommune.</p>
+      <a class='logo-cyberhus' href='http://cyberhus.dk?utm_source=kram&amp;utm_medium=widget&amp;utm_campaign=kramwidget' target='_blank' title='Cyberhus'>
+        <i></i>
+      </a>
+      <a class="logo-partner" href='http://aarhus.dk' target='_blank' title='Aarhus kommune'><img id="partner-logo"></a>
+    </footer>
+  </div>
+  <script>
+    // Helper function to add scripts
+    function addScript(src, callback) {
+      var s,
+        r,
+        t;
+      r = false;
+      s = document.createElement('script');
+      s.type = 'text/javascript';
+      s.src = src;
+      s.onload = s.onreadystatechange = function() {
+        console.log(this.readyState); //uncomment this line to see which ready states are called.
+        if (!r && (!this.readyState || this.readyState == 'complete')) {
+          r = true;
+          callback();
+        }
+      };
+      t = document.getElementsByTagName('script')[0];
+      t.parentNode.insertBefore(s, t);
+    }
+
+    //jsonp for incl. various
+    function various(fields) {
+      var fieldsOutput = '',
         length = fields.length,
         node = fields[0].node,
         title = node.title,
         subTitle = node.Undertitel,
         chatDescription = node.field_widget_chat_description,
-        qnaTerms = node.field_widget_qna_terms.replace(/, /g , '+'),
-        forumTerms = node.field_widget_forum_terms.replace(/, /g , '+'),
+        qnaTerms = node.field_widget_qna_terms.replace(/, /g, '+'),
+        forumTerms = node.field_widget_forum_terms.replace(/, /g, '+'),
         partnerLogo = node.uri,
-        qnaDataURL = 'https://cyberhus.dk/widget/letterbox/' + qnaTerms  + '?callback=letterbox',
-        forumDataURL = 'https://cyberhus.dk/widget/forum/' + forumTerms  + '?callback=forum';
+        qnaDataURL = 'https://cyberhus.dk/widget/letterbox/' + qnaTerms + '?callback=letterbox',
+        forumDataURL = 'https://cyberhus.dk/widget/forum/' + forumTerms + '?callback=forum';
 
-        addScript(qnaDataURL);
-        addScript(forumDataURL);
+      addScript(qnaDataURL, function() {
+        console.log('calling back');
+      });
+      addScript(forumDataURL, function() {
+        console.log('calling back');
+      });
 
 
-        document.getElementById("title").innerHTML = title;
-        document.getElementById("subtitle").innerHTML = subTitle;
-        document.getElementById("chat-description").innerHTML = chatDescription;
-        document.getElementById("partner-logo").src = partnerLogo;
+      document.getElementById("title").innerHTML = title;
+      document.getElementById("subtitle").innerHTML = subTitle;
+      document.getElementById("chat-description").innerHTML = chatDescription;
+      document.getElementById("partner-logo").src = partnerLogo;
 
+    }
+    //jsonp for incl. forum
+    function forum(nodes) {
+
+      var nodesOutput = '';
+      var length = nodes.length;
+
+      for (var i = 0; i < length; i++) {
+        node = nodes[i].node;
+        nodesOutput += '<li><a target="_blank" title="Læs indlæget på Cyberhus" href="' + node.path + '?utm_source=kram&utm_medium=widget&utm_campaign=kramwidget"><i class="arrow"></i><span>' + node.title + ' <time>' + node.created + ' siden</time></span></a></li>';
       }
-      //jsonp for incl. forum
-      function forum(nodes){
+      document.getElementById("forum-container").innerHTML = nodesOutput;
+    }
+    // jsonp for incl. letterbox
+    function letterbox(nodes) {
 
-        var nodesOutput = '';
-        var length = nodes.length;
+      var nodesOutput = '';
+      var length = nodes.length;
 
-        for (var i = 0; i < length; i++) {
-          node = nodes[i].node;
-          nodesOutput += '<li><a target="_blank" title="Læs indlæget på Cyberhus" href="' + node.path + '?utm_source=kram&utm_medium=widget&utm_campaign=kramwidget"><i class="arrow"></i><span>' + node.title + ' <time>' + node.created + ' siden</time></span></a></li>';
-        }
-        document.getElementById("forum-container").innerHTML = nodesOutput;
+      for (var i = 0; i < length; i++) {
+        node = nodes[i].node;
+        nodesOutput += '<li><a target="_blank" title="Læs brevkassespørgsmålet og svaret på Cyberhus" href="' + node.path + '?utm_source=kram&utm_medium=widget&utm_campaign=kramwidget"><i class="arrow"></i><span>' + node.title + ' <time>' + node.created + ' siden</time></span></a></li>';
       }
-      // jsonp for incl. letterbox
-      function letterbox(nodes){
+      document.getElementById("letterbox-container").innerHTML = nodesOutput;
+    }
 
-        var nodesOutput = '';
-        var length = nodes.length;
-
-        for (var i = 0; i < length; i++) {
-          node = nodes[i].node;
-          nodesOutput += '<li><a target="_blank" title="Læs brevkassespørgsmålet og svaret på Cyberhus" href="' + node.path + '?utm_source=kram&utm_medium=widget&utm_campaign=kramwidget"><i class="arrow"></i><span>' + node.title + ' <time>' + node.created + ' siden</time></span></a></li>';
-        }
-        document.getElementById("letterbox-container").innerHTML = nodesOutput;
+    // Based on https://github.com/johnymonster/iframe_height
+    // Child script
+    var messageParent = function(scrollTop) {
+      var h = document.body.scrollHeight;
+      h = (scrollTop) ? h + 's' : h;
+      if (top.postMessage) {
+        top.postMessage(h, '*');
+      } else {
+        window.location.hash = 'h' + h;
       }
+    }
 
-      // Based on https://github.com/johnymonster/iframe_height
-      // Child script
-      var messageParent = function(scrollTop){
-        var h = document.body.scrollHeight;
-        h = (scrollTop)? h+'s':h;
-        if(top.postMessage){
-          top.postMessage( h , '*');
-        } else {
-          window.location.hash = 'h'+h;
-        }
-      }
+    // Child Loader
+    window.onload = function() {
+      messageParent();
+    }
 
-      // Child Loader
-      window.onload = function() {
-        messageParent();
-      }
+    window.onresize = function() {
+      messageParent();
+    }
+  </script>
+  <script src="https://cyberhus.dk/widget/various/44477?callback=various" type="text/javascript"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+  <script src="../js/chatstatus.js" type="text/javascript"></script>
+</body>
 
-      window.onresize = function() {
-        messageParent();
-      }
-    </script>
-    <script src="https://cyberhus.dk/widget/various/44477?callback=various" type="text/javascript"></script>
-  </body>
 </html>

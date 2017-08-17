@@ -76,6 +76,14 @@ h3 i.icn-chat {
   width: 32px;
 }
 
+h3 a.chat-active i.icn-chat {
+  background-image: url(/img/icon-chat-active.png);
+}
+
+h3 a.chat-busy i.icn-chat {
+  background-image: url(/img/icon-chat-busy.png);
+}
+
 h3 i.icn-letterbox {
   background-image: url(/img/icon-letterbox.png);
   background-repeat: no-repeat;
